@@ -13,7 +13,7 @@ function App() {
 
   // Fetch parts when the page loads
   useEffect(() => {
-    fetch('http://localhost:5000/api/parts')
+    fetch('http://13.60.229.106:5000/api/parts')
       .then(res => res.json())
       .then(data => setParts(data))
       .catch(err => console.error("Error fetching data:", err));
@@ -29,7 +29,7 @@ function App() {
     e.preventDefault(); // Prevents the page from reloading
     
     try {
-      const response = await fetch('http://localhost:5000/api/parts', {
+      const response = await fetch('http://13.60.229.106:5000/api/parts', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -55,7 +55,7 @@ function App() {
 // 4. This fires when you click a red Delete button
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/parts/${id}`, {
+      const response = await fetch(`http://13.60.229.106:5000/api/parts/${id}`, {
         method: 'DELETE',
       });
 
@@ -71,7 +71,7 @@ function App() {
   const handleAddWear = async (id, currentWear) => {
     try {
       const newWear = currentWear + 100;
-      const response = await fetch(`http://localhost:5000/api/parts/${id}`, {
+      const response = await fetch(`http://13.60.229.106:5000/api/parts/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
