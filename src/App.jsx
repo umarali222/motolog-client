@@ -67,6 +67,27 @@ function App() {
       console.error("Error deleting part:", error);
     }
   };
+  // 5. This fires when you click the Add 100km button
+  const handleAddWear = async (id, currentWear) => {
+    try {
+      const newWear = currentWear + 100;
+      const response = await fetch(`http://localhost:5000/api/parts/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ currentWearKm: newWear }),
+      });
+
+      if (response.ok) {
+        const updatedPart = await response.json();
+        // This maps through your parts and instantly updates the correct one on your screen!
+        setParts(parts.map(part => part._id === id ? updatedPart : part));
+      }
+    } catch (error) {
+      console.error("Error updating wear:", error);
+    }
+  };
 
   return (
     <div className="app-container">
@@ -122,12 +143,21 @@ function App() {
             <p style={{ color: '#4da8da', fontWeight: 'bold' }}>Current Wear: {part.currentWearKm} km</p>
             
             {/* THE NEW DELETE BUTTON */}
-            <button 
-              onClick={() => handleDelete(part._id)} 
-              style={{ position: 'absolute', top: '20px', right: '20px', padding: '8px 15px', backgroundColor: '#e53935', color: '#fff', border: 'none', borderRadius: '5px', cursor: 'pointer', fontWeight: 'bold' }}
-            >
-              Delete
-            </button>
+            {/* THE UPDATE AND DELETE BUTTONS */}
+            <div style={{ position: 'absolute', top: '20px', right: '20px', display: 'flex', gap: '10px' }}>
+              <button 
+                onClick={() => handleAddWear(part._id, part.currentWearKm)} 
+                style={{ padding: '8px 15px', backgroundColor: '#4da8da', color: '#000', border: 'none', borderRadius: '5px', cursor: 'pointer', fontWeight: 'bold' }}
+              >
+                +100 km
+              </button>
+              <button 
+                onClick={() => handleDelete(part._id)} 
+                style={{ padding: '8px 15px', backgroundColor: '#e53935', color: '#fff', border: 'none', borderRadius: '5px', cursor: 'pointer', fontWeight: 'bold' }}
+              >
+                Delete
+              </button>
+            </div>
           </div>
         ))
       )}
