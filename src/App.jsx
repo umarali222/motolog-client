@@ -8,12 +8,13 @@ function App() {
   const [formData, setFormData] = useState({
     partName: '',
     brand: '',
-    lifespanKm: ''
+    lifespanKm: '',
+    status: 'Optimal'
   });
 
   // Fetch parts when the page loads
   useEffect(() => {
-    fetch('http://13.60.229.106:5000/api/parts')
+    fetch('http://localhost:5000/api/parts')
       .then(res => res.json())
       .then(data => setParts(data))
       .catch(err => console.error("Error fetching data:", err));
@@ -29,7 +30,7 @@ function App() {
     e.preventDefault(); // Prevents the page from reloading
     
     try {
-      const response = await fetch('http://13.60.229.106:5000/api/parts', {
+      const response = await fetch('http://localhost:5000/api/parts', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -55,7 +56,7 @@ function App() {
 // 4. This fires when you click a red Delete button
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`http://13.60.229.106:5000/api/parts/${id}`, {
+      const response = await fetch(`http://localhost:5000/api/parts/${id}`, {
         method: 'DELETE',
       });
 
@@ -71,7 +72,7 @@ function App() {
   const handleAddWear = async (id, currentWear) => {
     try {
       const newWear = currentWear + 100;
-      const response = await fetch(`http://13.60.229.106:5000/api/parts/${id}`, {
+      const response = await fetch(`http://localhost:5000/api/parts/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -106,6 +107,17 @@ function App() {
             required
             style={{ padding: '10px', borderRadius: '5px', border: '1px solid #333', backgroundColor: '#2a2a2a', color: '#fff', flex: 1 }}
           />
+          <span style={{ 
+            backgroundColor: part.status === 'Optimal' ? '#4caf50' : part.status === 'Warning' ? '#ff9800' : '#e53935', 
+            color: 'white', 
+            padding: '2px 10px', 
+            borderRadius: '20px', 
+            fontSize: '12px',
+            display: 'inline-block',
+            marginBottom: '10px'
+          }}>
+            {part.status || 'Optimal'}
+          </span>
           <input 
             type="text" 
             name="brand" 
@@ -124,6 +136,16 @@ function App() {
             required
             style={{ padding: '10px', borderRadius: '5px', border: '1px solid #333', backgroundColor: '#2a2a2a', color: '#fff', width: '150px' }}
           />
+          <select 
+            name="status" 
+            value={formData.status} 
+            onChange={handleInputChange}
+            style={{ padding: '10px', borderRadius: '5px', border: '1px solid #333', backgroundColor: '#2a2a2a', color: '#fff', width: '150px' }}
+          >
+          <option value="Optimal">Optimal</option>
+            <option value="Warning">Warning</option>
+           <option value="Needs Replacement">Needs Replacement</option>
+          </select>
           <button type="submit" style={{ padding: '10px 20px', backgroundColor: '#4da8da', color: '#000', border: 'none', borderRadius: '5px', fontWeight: 'bold', cursor: 'pointer' }}>
             Add Part
           </button>
