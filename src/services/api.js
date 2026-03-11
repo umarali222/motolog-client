@@ -16,7 +16,7 @@ const api = {
     return res.json();
   },
   async put(path, body) {
-    const res = await fetch(`${BASE_URL}${path}`, {
+     const res = await fetch(`${BASE_URL}${path}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
@@ -44,4 +44,4 @@ export const ridesApi = {
   getAll: () => api.get('/api/rides'),
   create: (data) => api.post('/api/rides', data),
   delete: (id) => api.delete(`/api/rides/${id}`),
-};
+};git 
